@@ -1,16 +1,38 @@
-import { EventEmitter } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
+import { Ingredient } from "../shared/ingredient.model";
+import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
 
+@Injectable()
 export class RecipeService{
     recipeSelected = new EventEmitter<Recipe>();
-    private recipes: Recipe[]=[
-        new Recipe('A test recipe', 'This is a test recipe', 'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2021%2F09%2F27%2FScreen-Shot-2021-09-26-at-8.52.38-PM.png&w=426&h=285&c=sc&poi=face&q=85'),
-        new Recipe('A test recipe 2', 'This is a test recipe 2', 'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2021%2F09%2F27%2FScreen-Shot-2021-09-26-at-8.52.38-PM.png&w=426&h=285&c=sc&poi=face&q=85')
+    private recipes: Recipe[] = [
+        new Recipe(
+          'Tasty Schnitzel',
+          'A super-tasty Schnitzel - just awesome!',
+          'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
+          [
+            new Ingredient('Meat', 1),
+            new Ingredient('French Fries', 20)
+          ]),
+        new Recipe('Big Fat Burger',
+          'What else you need to say?',
+          'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
+          [
+            new Ingredient('Buns', 2),
+            new Ingredient('Meat', 1)
+          ])
       ];
 
+      constructor(private slService:ShoppingListService){
+
+      }
     
     getRecipes() {
         return this.recipes.slice();
     }
     
+    addIngredientsToShoppingList(ingredients:Ingredient[]){
+        this.slService.addIngredients(ingredients);
+    }
 }
